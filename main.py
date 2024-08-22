@@ -77,6 +77,15 @@ def main():
                 inputs.select_by_index(idx)
                 break
 
+        checkin_in_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//input[@name='checkinDate']"))
+        )
+        checkin_out_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//input[@name='checkoutDate']"))
+        )
+        checkin_dt = checkin_in_element.get_attribute("value")
+        checkout_dt = checkin_out_element.get_attribute("value")
+
         submit_element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "//span[@id='jsi-submit-btn']"))
         )
@@ -109,6 +118,7 @@ def main():
             hotel_detail = scrape_item_details(driver, hotel_url)
             hotel_details.append(hotel_detail)
             print(hotel_detail)
+            break
 
             # driver.get(prev_url)
             # next_page = WebDriverWait(driver, 10).until(
@@ -121,9 +131,18 @@ def main():
             #
             # prev_url = driver.current_url
 
-    with open("results.csv", mode="w", newline="") as file:
+    with open(f"{search_prefecture}_hotels.csv", mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["name", "location", "room_type", "jp_price", "us_price"])
+        writer.writerow(["Summary"])
+        writer.writerow(["Prefecture", search_prefecture])
+        writer.writerow(["From date", checkin_dt])
+        writer.writerow(["To date", checkout_dt])
+        writer.writerow(["Total hotels count", len(hotel_details)])
+
+        writer.writerow([])
+
+        writer.writerow(["Hotel List Details"])
+        writer.writerow(["Name", "Location", "Room Type", "JPY Price", "US Price"])
 
         for hotel in hotel_details:
             for room in hotel["room_types"]:
@@ -136,8 +155,6 @@ def main():
                         room["us_price"],
                     ]
                 )
-
-        writer.writerow(["Total hotel count", len(hotel_details)])
 
 
 if __name__ == "__main__":
