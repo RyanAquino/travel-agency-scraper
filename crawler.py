@@ -56,7 +56,7 @@ class Crawler:
         )
         self.driver.execute_script("arguments[0].click();", submit_element)
 
-    def scrape_search_date_params(self) -> tuple:
+    def scrape_search_data(self) -> dict:
         """
         Scrape search date params set.
 
@@ -68,10 +68,25 @@ class Crawler:
         checkin_out_element = find_element_by_xpath(
             self.driver, "//input[@name='checkoutDate']"
         )
+
+        room_count_element = find_element_by_xpath(
+            self.driver, "//input[@name='roomCount']"
+        )
+        adult_num_element = find_element_by_xpath(
+            self.driver, "//input[@name='adultNum']"
+        )
+
         checkin_dt = checkin_in_element.get_attribute("value")
         checkout_dt = checkin_out_element.get_attribute("value")
+        room_count = room_count_element.get_attribute("value")
+        adult_num = adult_num_element.get_attribute("value")
 
-        return checkin_dt, checkout_dt
+        return {
+            "checkin": checkin_dt,
+            "checkout": checkout_dt,
+            "room_count": room_count,
+            "adult_num": adult_num,
+        }
 
     @staticmethod
     def scrape_room_type_sub_rooms(room_plan_name: str, sub_rooms: list):

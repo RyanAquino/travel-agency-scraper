@@ -21,12 +21,13 @@ def main():
         driver.get(Config.BASE_URL)
 
         crawler = Crawler(driver)
-        checkin_dt, checkout_dt = crawler.scrape_search_date_params()
+        search_data = crawler.scrape_search_data()
+        search_data["prefecture"] = search_prefecture
         crawler.perform_search(search_prefecture)
         hotel_details = crawler.scrape_hotels()
 
     # Refactor to save row records on the fly
-    generate_csv_report(search_prefecture, checkin_dt, checkout_dt, hotel_details)
+    generate_csv_report(search_data, hotel_details)
 
 
 if __name__ == "__main__":
