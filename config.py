@@ -27,6 +27,7 @@ def chrome_settings_init() -> dict:
     """
     chrome_options = ChromeOptions()
     chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument(f"--proxy-server={Config.PROXIES[0]}")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--incognito")

@@ -29,7 +29,7 @@ class Crawler:
 
     def perform_search(self, search_prefecture: str):
         """
-        Perform prefecture search and submits
+        Perform prefecture search and submit the form to page.
 
         :param search_prefecture: search input prefecture
         :return: None
@@ -159,7 +159,7 @@ class Crawler:
         """
         Scrape hotel details (Name, location, Room Types, prices with pricing options) up until last available page.
 
-        :return: list of hotel details
+        :return: list of hotel details containing (name, location, list of room_types)
         """
         hotel_details = []
         prev_url = self.driver.current_url
@@ -177,7 +177,8 @@ class Crawler:
                 next_page = WebDriverWait(self.driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, "//li[@class='next']"))
                 )
-                self.driver.execute_script("arguments[0].click();", next_page)
+
+            self.driver.execute_script("arguments[0].click();", next_page)
 
             if len(hotel_urls) < 30 or prev_url == self.driver.current_url:
                 break

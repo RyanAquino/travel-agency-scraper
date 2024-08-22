@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir --upgrade -r /src/requirements.txt
 
 COPY . /src/
 
-CMD ["python", "-u", "main.py"]
+CMD ["python", "main.py"]

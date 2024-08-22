@@ -22,8 +22,8 @@ def generate_csv_report(
     :param hotel_details: list of hotel details
     :return: None
     """
-    filename = f"{search_prefecture}_hotels.csv"
-    with open(filename, mode="w", newline="") as file:
+    filename = f"./results/{search_prefecture}_hotels.csv"
+    with open(filename, mode="w+", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["Summary"])
         writer.writerow(["Prefecture", search_prefecture])

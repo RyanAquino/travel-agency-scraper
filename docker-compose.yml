@@ -18,6 +18,8 @@ services:
   app:
     build:
       context: .
+    volumes:
+      - ./results:/src/results/
     environment:
       proxy-1: http://proxy-1:3128
       proxy-2: http://proxy-2:3129

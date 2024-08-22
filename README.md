@@ -1,5 +1,6 @@
 # Travel Agency Scraper
-Scrapes [Jalan](https://www.jalan.net/en/japan_hotels_ryokan/])  English website and extracts Hotel names, address location,  
+Scrapes [Jalan](https://www.jalan.net/en/japan_hotels_ryokan/])  English website and extracts Hotel names, address location,
+room types along with its pricing options in both USD and YEN.
 
 ### Requirements
 - python 3
@@ -26,4 +27,9 @@ cd travel-agency-scraper
 #### Run Containers
 ```
 docker-compose up -d
+```
+
+### Validating CSV report
+```
+cd results/
 ```
