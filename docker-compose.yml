@@ -1,0 +1,26 @@
+services:
+  proxy-1:
+    image: ubuntu/squid:latest
+    restart: always
+    ports:
+      - 3128:3128
+    volumes:
+      - ./proxy-config-1.conf:/etc/squid/squid.conf
+
+  proxy-2:
+    image: ubuntu/squid:latest
+    restart: always
+    ports:
+      - 3129:3129
+    volumes:
+      - ./proxy-config-2.conf:/etc/squid/squid.conf
+
+  app:
+    build:
+      context: .
+    environment:
+      proxy-1: http://proxy-1:3128
+      proxy-2: http://proxy-2:3129
+    depends_on:
+      - proxy-1
+      - proxy-2
