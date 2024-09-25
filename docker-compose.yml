@@ -2,18 +2,18 @@ services:
   proxy-1:
     image: ubuntu/squid:latest
     restart: always
-    ports:
-      - 3128:3128
     volumes:
       - ./proxy-config-1.conf:/etc/squid/squid.conf
+      - ./htpasswd/proxy-1-user:/etc/squid/passwords
+      - ./certs:/etc/squid/certs
 
   proxy-2:
     image: ubuntu/squid:latest
     restart: always
-    ports:
-      - 3129:3129
     volumes:
       - ./proxy-config-2.conf:/etc/squid/squid.conf
+      - ./htpasswd/proxy-2-user:/etc/squid/passwords
+      - ./certs:/etc/squid/certs
 
   app:
     build:
@@ -21,8 +21,8 @@ services:
     volumes:
       - ./results:/src/results/
     environment:
-      proxy-1: http://proxy-1:3128
-      proxy-2: http://proxy-2:3129
+      proxy-1: proxy-1
+      proxy-2: proxy-2
     depends_on:
       - proxy-1
       - proxy-2

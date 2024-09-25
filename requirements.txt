@@ -17,3 +17,6 @@ urllib3==2.2.2
 websocket-client==1.8.0
 wsproto==1.2.0
 loguru==0.7.2
+selenium-wire==5.1.0
+blinker==1.7.0
+setuptools

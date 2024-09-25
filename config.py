@@ -4,7 +4,6 @@ Configuration related functions
 
 import os
 
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.webdriver import WebDriver
 
@@ -17,6 +16,20 @@ class Config:
         os.getenv("proxy-1"),
         os.getenv("proxy-2"),
     ]
+    PROXY_DETAILS = {
+        os.getenv("proxy-1"): {
+            "user": "user-1",
+            "pass": "1",
+            "port": 3128,
+            "host": os.getenv("proxy-1")
+        },
+        os.getenv("proxy-2"): {
+            "user": "user-2",
+            "pass": "2",
+            "port": 3129,
+            "host": os.getenv("proxy-2")
+        },
+    }
     DRIVER_TIMEOUT = 30
     BASE_URL = "https://www.jalan.net/en/japan_hotels_ryokan/"
     proxy_idx = 0
@@ -56,8 +69,22 @@ class Config:
         Create driver with the chosen proxy.
         :return: selenium chrome driver
         """
-        proxy = cls.get_current_proxy()
-        chrome_options = Config.generate_base_settings()
-        chrome_options.add_argument(f"--proxy-server={proxy}")
+        from seleniumwire import webdriver
 
-        return webdriver.Chrome(options=chrome_options)
+        chrome_options = Config.generate_base_settings()
+        proxy = cls.get_current_proxy()
+        proxy_details = cls.PROXY_DETAILS.get(proxy)
+        user = proxy_details.get("user")
+        pwd = proxy_details.get("pass")
+        host = proxy_details.get("host")
+        port = proxy_details.get("port")
+        proxy = f"https://{user}:{pwd}@{host}:{port}"
+
+        selenium_wire_options = {
+            'proxy': {
+                'http': proxy,
+                # 'https': f"https://{user}:{pwd}@{host}:{port}",
+            },
+        }
+
+        return webdriver.Chrome(options=chrome_options, seleniumwire_options=selenium_wire_options)
